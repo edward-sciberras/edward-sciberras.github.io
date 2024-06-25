@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', function () {
     gameDropdown.addEventListener('change', function () {
         const selectedGame = gameDropdown.value;
         if (selectedGame) {
-            gameTitle.textContent = "Because You Played ${selectedGame}";
+            gameTitle.textContent = `Because You Played ${selectedGame}`;
             const selectedGameData = gameData.find(game => game.GameName === selectedGame);
             if (selectedGameData && selectedGameData.Recommendations) {
                 selectedGameData.Recommendations.forEach((url, index) => {
