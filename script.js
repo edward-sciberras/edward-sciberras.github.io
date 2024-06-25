@@ -8,23 +8,27 @@ document.addEventListener('DOMContentLoaded', function () {
         document.querySelector('#game3 img')
     ];
 
-    // Assume `gameData` is already defined globally by Streamlit
-    // Example: <script>var gameData = {...};</script> will be in the HTML
-    // let gameData = window.gameData || [];
+    let gameData = [];
 
-    // Populate the dropdown with game names
-    gameData.forEach(entry => {
-        const option = document.createElement('option');
-        option.value = entry.GameName;
-        option.textContent = entry.GameName;
-        gameDropdown.appendChild(option);
-    });
+    // Fetch and populate the dropdown with game names
+    fetch('game_recommendations.json')
+        .then(response => response.json())
+        .then(data => {
+            gameData = data;
+            data.forEach(entry => {
+                const option = document.createElement('option');
+                option.value = entry.GameName;
+                option.textContent = entry.GameName;
+                gameDropdown.appendChild(option);
+            });
+    })
+    .catch(error => console.error('Error loading JSON:', error));
 
     // Add event listener to update the h6 text and images when a game is selected
     gameDropdown.addEventListener('change', function () {
         const selectedGame = gameDropdown.value;
         if (selectedGame) {
-            gameTitle.textContent = `Because You Played ${selectedGame}`;
+            gameTitle.textContent = "Because You Played ${selectedGame}";
             const selectedGameData = gameData.find(game => game.GameName === selectedGame);
             if (selectedGameData && selectedGameData.Recommendations) {
                 selectedGameData.Recommendations.forEach((url, index) => {
